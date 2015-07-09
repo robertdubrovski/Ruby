@@ -19,7 +19,7 @@ def print_grid(grid)				# Method to print the grid
     end	
   end
 
-end
+end						# End of print_grid
 
 def check_full(grid, full=true)			# Method to check if the grid is full
 
@@ -33,9 +33,45 @@ end
 
 
 return full
+end						# End of check_full
+
+def check_winner(grid)        			# Method to determine if there is a winner
+
+# winner returns "x", "o" or "n" (no winner) 
+winner = "n" 
+
+# check horizontal
+grid.each do |x,y,z|
+  if (x==y && y==z) && x != " "
+    winner = x
+    return winner.capitalize
+  end
 end
 
-def play
+# check vertical
+(0..2).each do |i|
+  if grid[0][i] == grid[1][i] && grid[1][i] == grid[2][i]
+    winner = grid[0][i]
+    return winner.capitalize
+  end
+
+end
+# check diagonal
+if (grid[0][0]==grid[1][1] && grid[1][1] == grid[2][2])
+  winner = grid[0][0]
+  return winner.capitalize
+elsif (grid[0][2]==grid[1][1] && grid[1][1]==grid[2][0])
+  winner = grid[0][2]
+  return winner.capitalize
+
+end
+return winner.capitalize
+
+end						# End of check_winner
+
+
+
+def play					# Method to play the game
 
 
 help_grid = [["1", "2", "3"], ["4", "5", "6"], ["7", "8", "9"]]
@@ -57,38 +93,45 @@ assign = {
   9 => "2 2",
 }
 
+turn = "X"
   loop do
-    puts "X's turn! Enter an integer 1-9 for your move: "
+    puts "#{turn}'s turn! Enter an integer 1-9 for your move: "
       loop do
     move = gets.chomp
+    if move.to_i > 9 || move.to_i < 1 
+	puts "Can you read? Enter an integer 1-9: "
+	next
+    end
     move_arr = assign[move.to_i].split(" ")
     if grid[move_arr[1].to_i][move_arr[0].to_i] != " " 
-	puts "You can't move there you goddamn snake! Try again: "
+	puts "That square is already taken! Try again: "
 	next
      end
-    grid[move_arr[1].to_i][move_arr[0].to_i] = "x" 
+    grid[move_arr[1].to_i][move_arr[0].to_i] = turn.downcase 
 	break
       end
     print_grid(grid)
+    if check_winner(grid) == "X"
+      puts "#{check_winner(grid)} wins!"
+      break
+    elsif check_winner(grid) =="O"
+      puts "#{check_winner(grid)} wins!"
+      break
+    end
 
-    break if check_full(grid)
+    if turn == "X"
+      turn = "O"
+    else
+      turn = "X"
+    end
 
-    puts "O's turn! Enter an integer 1-9 for your move: "
-          loop do
-    move = gets.chomp
-    move_arr = assign[move.to_i].split(" ")
-    if grid[move_arr[1].to_i][move_arr[0].to_i] != " " 
-	puts "You can't move there you goddamn snake! Try again: "
-	next
-     end
-    grid[move_arr[1].to_i][move_arr[0].to_i] = "o" 
-	break
-      end
-    print_grid(grid)
+    if check_full(grid) 
+      puts "Congratulations! Everyone's a winner!"
+      break
+    end
 
-  end
-puts "Congratulations! Everyone's a winner!"
-end
+ end
+end						# End of play
 
 
 play

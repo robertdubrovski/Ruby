@@ -1,9 +1,9 @@
 def print_grid(grid)				# Method to print the grid
-  grid.each_with_index do |y, index|
+  grid.each_with_index do |y, yindex|
 
-    y.each_with_index do |x, index|
+    y.each_with_index do |x, xindex|
 
-      unless index == y.length-1 
+      unless xindex == y.length-1 
 			
       print " #{x} |"	
       else print " #{x} \n"
@@ -12,7 +12,7 @@ def print_grid(grid)				# Method to print the grid
 		
     end
 
-    unless index == y.length-1
+    unless yindex == y.length-1
 	
       print "---|---|---\n"
       else puts 

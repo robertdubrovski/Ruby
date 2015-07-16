@@ -218,8 +218,15 @@ line = 1
 gameboard = []
 while line < 10 do
 
-puts "Enter line ##{line} of your Sudoku below, unseparated. Blank squares are denoted by a space."
+puts "Enter line ##{line} of your Sudoku below. For example, \"1 3 5 7 9\". If you make a mistake, type \"undo\" to redo the previous line."
 input = gets.chomp
+
+if input == "undo"
+  line -= 1
+  gameboard.pop
+  next
+end
+
 input = input.split(//)
 print input
 puts

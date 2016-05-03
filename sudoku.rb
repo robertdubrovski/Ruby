@@ -78,139 +78,139 @@ class Sudoku
   
 
   def solve(grid)
-count = 1
-  loop do
-if count == 30 
-break
-end
+    count = 1
+    loop do
+      if count == 30 
+        break
+      end
 
-    grid.each_with_index do |y, i|
-    
-      rnums = [] # Array to eventually filter for only single values in rows
-      cnums = [] # Array to eventually filter for only single values in columns
-
-      y.each_with_index do |x, j|
-        cnums = []
-        if x.length == 1              # If square is solved, go to next square
-          next
-        end
-
-# Check row
-
-        y.each_with_index do |z, k|
-          if k == j && z.length == 1
-	    rnums = rnums + z.split(//)
+      grid.each_with_index do |y, i|
+      
+        rnums = [] # Array to eventually filter for only single values in rows
+        cnums = [] # Array to eventually filter for only single values in columns
+  
+        y.each_with_index do |x, j|
+          cnums = []
+          if x.length == 1              # If square is solved, go to next square
             next
           end
-       
-          if z.length == 1
-            y[j].tr!(z,'') 
-	    rnums = rnums + z.split(//)
-          else rnums = rnums + z.split(//)
-          end 
-        
-        end
-        
-        singles = rnums.select{|s| rnums.count(s) == 1} # The values that appear once in the row
-
-        y.each_with_index do |z, k|
-
-	  if singles.length == 0
-	    break
-	  elsif z.length == 1
-	    next
-	  end
-
-          singles.each do |sin|
-
-            if z.include? sin
-              y[k] = sin
-              #singles.delete(sin)
+  
+  # Check row
+  
+          y.each_with_index do |z, k|
+            if k == j && z.length == 1
+  	    rnums = rnums + z.split(//)
+              next
             end
-
-          end # end of singles.each
-
-
-        end # y.each_with_index do |z, k|
-
-# Check column
-# The outermost loop is grid.each_with_index do |y, i|
-
-        grid.each_with_index do |z, k|
-          if k == i && z[j].length == 1
-	    cnums = cnums + z[j].split(//)
-            next
-	  end
-
-	  if z[j].length == 1
-	    y[j].tr!(z[j],'') 
-	    cnums = cnums + z[j].split(//)
-            next
-          else cnums = cnums + z[j].split(//)
-	  end
-
-        end # grid.each_with_index do |z, k|
-
-
-        singles = cnums.select{|s| cnums.count(s) == 1} # The values that appear once in the column 
- 
-        grid.each_with_index do |z, k|
-
-	  if singles.length == 0
-	    break
-	  elsif z[j].length == 1
-	    next
-	  end
-
-          singles.each do |sin|
-
-            if z[j].include? sin
-              grid[k][j] = sin
-              #singles.delete(sin)
-            end
-
-          end # end of singles.each
-
-
-        end # grid.each_with_index do |z, k|
-
-# Check square grid
-	xindex = (j%3-j)*-1
-	yindex = (i%3-i)*-1 
-
-	3.times do
-	
-	  3.times do 
-	    if xindex == j && yindex == i
-	      xindex += 1
-	      next
-            end
-
-	    if grid[yindex][xindex].length == 1
-	      y[j].tr!(grid[yindex][xindex],'')
-	    end
-	    xindex += 1
-	  end
-	  xindex = (j%3-j)*-1
-	  yindex += 1
-	end
-      end #end of y.each_with_index
-    end # end of grid.each_with_index
-
-
-    if Sudoku.check_full(grid)          # Stop solve if grid is filled 
-      puts "Solved!"
-      Sudoku.print_grid(grid)
-      break
-    end
-    
-    if count == 29
-      puts "Sorry, can't solve this. This is the best I can do:"
-      Sudoku.print_grid(grid)
-      break
-    end
-count += 1
-  end # end of loop
+         
+            if z.length == 1
+              y[j].tr!(z,'') 
+  	    rnums = rnums + z.split(//)
+            else rnums = rnums + z.split(//)
+            end 
+          
+          end
+          
+          singles = rnums.select{|s| rnums.count(s) == 1} # The values that appear once in the row
+  
+          y.each_with_index do |z, k|
+  
+  	  if singles.length == 0
+  	    break
+  	  elsif z.length == 1
+  	    next
+  	  end
+  
+            singles.each do |sin|
+  
+              if z.include? sin
+                y[k] = sin
+                #singles.delete(sin)
+              end
+  
+            end # end of singles.each
+  
+  
+          end # y.each_with_index do |z, k|
+  
+  # Check column
+  # The outermost loop is grid.each_with_index do |y, i|
+  
+          grid.each_with_index do |z, k|
+            if k == i && z[j].length == 1
+  	    cnums = cnums + z[j].split(//)
+              next
+  	  end
+  
+  	  if z[j].length == 1
+  	    y[j].tr!(z[j],'') 
+  	    cnums = cnums + z[j].split(//)
+              next
+            else cnums = cnums + z[j].split(//)
+  	  end
+  
+          end # grid.each_with_index do |z, k|
+  
+  
+          singles = cnums.select{|s| cnums.count(s) == 1} # The values that appear once in the column 
+   
+          grid.each_with_index do |z, k|
+  
+  	  if singles.length == 0
+  	    break
+  	  elsif z[j].length == 1
+  	    next
+  	  end
+  
+            singles.each do |sin|
+  
+              if z[j].include? sin
+                grid[k][j] = sin
+                #singles.delete(sin)
+              end
+  
+            end # end of singles.each
+  
+  
+          end # grid.each_with_index do |z, k|
+  
+  # Check square grid
+  	xindex = (j%3-j)*-1
+  	yindex = (i%3-i)*-1 
+  
+  	3.times do
+  	
+  	  3.times do 
+  	    if xindex == j && yindex == i
+  	      xindex += 1
+  	      next
+              end
+  
+  	    if grid[yindex][xindex].length == 1
+  	      y[j].tr!(grid[yindex][xindex],'')
+  	    end
+  	    xindex += 1
+  	  end
+  	  xindex = (j%3-j)*-1
+  	  yindex += 1
+  	end
+        end #end of y.each_with_index
+      end # end of grid.each_with_index
+  
+  
+      if Sudoku.check_full(grid)          # Stop solve if grid is filled 
+        puts "Solved!"
+        Sudoku.print_grid(grid)
+        break
+      end
+      
+      if count == 29
+        puts "Sorry, can't solve this. This is the best I can do:"
+        Sudoku.print_grid(grid)
+        break
+      end
+      count += 1
+    end # end of loop
   end # end of solve
 
 end # end of Sudoku class
